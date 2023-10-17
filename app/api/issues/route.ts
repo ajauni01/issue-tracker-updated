@@ -9,7 +9,6 @@ const createIssueSchema = z.object({
     description: z.string().min(1)
 })
 
-
 export async function POST(request: NextRequest){
  const body = await request.json();
 //  store the object returned by zod in the validation variable
@@ -28,3 +27,4 @@ export async function POST(request: NextRequest){
 
 // TODO: understand the createIssueSchema
 // TODO: understand the Next.js prisma client
+ 
