@@ -1,12 +1,17 @@
 import '@radix-ui/themes/styles.css';
-import './globals.css'
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import NavBar from './NavBar'
-import { Theme } from '@radix-ui/themes';
+import './theme-config.css';
+import './globals.css';
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import NavBar from './NavBar';
+import { Theme, ThemePanel } from '@radix-ui/themes';
 
-
-const inter = Inter({ subsets: ['latin'] })
+// add the Inter font to the page
+const inter = Inter({ 
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+})
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -20,15 +25,18 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-      <Theme>
+      <body className={inter.variable}>
+      <Theme appearance="light" accentColor="yellow" grayColor="mauve" scaling="105%">
       <NavBar/>
       <main className='p-5'>
         {children}
       </main>
+      {/* ThemePanel component to customize the Radix UI themes */}
+      {/* <ThemePanel/> */}
       </Theme>
       </body>
     </html>
   )
 }
 // TODO: Investigate why my page.tsx working as a child of the RootLayout despite not being wrapped by it.
+// TODO: understand the how the font is implemented in the RootLayout component and why the inter font is not loading

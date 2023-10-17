@@ -15,7 +15,7 @@ const NewIssuePage= () => {
 </TextField.Root>
 {/* TextArea to write the issue */}
 <TextArea placeholder="Please describe your issue" />
-<Button color="cyan" variant="soft">
+<Button>
     Submit New Issue
   </Button>
     </div>
