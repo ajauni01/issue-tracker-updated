@@ -5,8 +5,8 @@ import prisma from "@/prisma/client";
 
 //  use zod for data validation
 const createIssueSchema = z.object({
-    title: z.string().min(1).max(255),
-    description: z.string().min(1)
+    title: z.string().min(1, 'Title is required.').max(255),
+    description: z.string().min(1, 'Description is required.')
 })
 
 export async function POST(request: NextRequest){
@@ -14,7 +14,7 @@ export async function POST(request: NextRequest){
 //  store the object returned by zod in the validation variable
  const validation = createIssueSchema.safeParse(body);
  if (!validation.success){
-    return NextResponse.json(validation.error.errors, {status:400})
+    return NextResponse.json(validation.error.format(), {status:400})
  }
 
 //  if the validation is successful, create a new issue using the prisma client
