@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { createIssueSchema } from '@/app/validationSchema';
 import {z} from 'zod';
+import ErrorMessage from '@/app/components/ErrorMessage';
 
 // IssueForm is the type of the data that we are going to send to the server
 type IssueForm = z.infer<typeof createIssueSchema>;
@@ -54,11 +55,10 @@ const NewIssuePage = () => {
       </TextField.Root>
       </div>
       {/* display the error message related to the title */}
-      {errors.title && <Text color="red" as='p'>{errors.title.message}</Text>}
-    
+    <ErrorMessage>{errors.title?.message}</ErrorMessage>
       {/* TextArea to write the issue */}
       <Controller name="description" control={control}  render={({ field }) => <SimpleMDE placeholder='Please describe your issue' {...field} />} />
-      {errors.description && <Text color="red" as='p'>{errors.description.message}</Text>}
+      <ErrorMessage>{errors.description?.message}</ErrorMessage>
       <Button>Submit New Issue</Button>
     </form>
     </div>
