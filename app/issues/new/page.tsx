@@ -28,6 +28,20 @@ const NewIssuePage = () => {
   // useState hook to handle the loading state
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // function to handle the form submission
+  const onSubmit = handleSubmit(async (data) => {
+      try {
+        //  set the loading state to true wile the data is sending to the server
+        setIsSubmitting(true);
+        await axios.post('/api/issues', data);
+     //  route the user to the issues page after submitting the form
+    router.push('/issues') 
+      } catch (error) {
+        // set the loading state to false if there is an error
+        setIsSubmitting(false);
+        setError('An unexpected error occurred')
+      }
+  })
 
   return (
     <div className='max-w-xl space-y-3'>
@@ -41,20 +55,9 @@ const NewIssuePage = () => {
     </Callout.Text>
   </Callout.Root>}
   
-      <form  onSubmit={handleSubmit( async (data)=>{
-      try {
-        //  set the loading state to true wile the data is sending to the server
-        setIsSubmitting(true);
-        await axios.post('/api/issues', data);
-     //  route the user to the issues page after submitting the form
-    router.push('/issues') 
-      } catch (error) {
-        // set the loading state to false if there is an error
-        setIsSubmitting(false);
-        setError('An unexpected error occurred')
-      }
-    })}>
+      <form  onSubmit={onSubmit}>
       <div className='mb-2'>
+        {/* Title area and magnifying glass icon */}
       <TextField.Root>
         <TextField.Slot>
           <MagnifyingGlassIcon height='16' width='16' />
