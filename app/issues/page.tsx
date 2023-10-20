@@ -3,14 +3,17 @@ import { Button, Table } from '@radix-ui/themes';
 import Link from 'next/link';
 import prisma from '@/prisma/client';
 import IssueStatusBadge from '../components/IssueStatusBadge';
+import delay from 'delay';
+import IssueActions from './IssueActions';
   
 const IssuesPage = async () => {
   const issues = await prisma.issue.findMany();
+  await delay(2000);
+  
   return (
     <div>
-      <div className='mb-5'>
-        <Button><Link href='/issues/new'>New Issue</Link></Button>
-      </div>
+      {/* new issue button */}
+      <IssueActions/>
       {/* table to show all the issues */}
       <Table.Root variant="surface">
         <Table.Header>
@@ -41,3 +44,4 @@ const IssuesPage = async () => {
 
 export default IssuesPage;
 // TODO: Investgate why the md:table-cell class is not working after adding the 'hidden' class to the div
+// TODO: understand the const issues = await prisma.issue.findMany();
