@@ -3,7 +3,7 @@ import { Button, Callout, Text, TextField } from '@radix-ui/themes';
 import { InfoCircledIcon, MagnifyingGlassIcon } from '@radix-ui/react-icons';
 import SimpleMDE from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
-import { useCallback, useMemo, useState } from 'react';
+import {useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
@@ -11,6 +11,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { createIssueSchema } from '@/app/validationSchema';
 import {z} from 'zod';
 import ErrorMessage from '@/app/components/ErrorMessage';
+import { Spinner } from '@/app/components/Spinner';
 
 // IssueForm is the type of the data that we are going to send to the server
 type IssueForm = z.infer<typeof createIssueSchema>;
@@ -24,6 +25,9 @@ const NewIssuePage = () => {
   // console.log('register details', register('title'));
   // useState hook to handle the error
   const [error, setError] = useState("")
+  // useState hook to handle the loading state
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
 
   return (
     <div className='max-w-xl space-y-3'>
@@ -39,10 +43,14 @@ const NewIssuePage = () => {
   
       <form  onSubmit={handleSubmit( async (data)=>{
       try {
+        //  set the loading state to true wile the data is sending to the server
+        setIsSubmitting(true);
         await axios.post('/api/issues', data);
      //  route the user to the issues page after submitting the form
     router.push('/issues') 
       } catch (error) {
+        // set the loading state to false if there is an error
+        setIsSubmitting(false);
         setError('An unexpected error occurred')
       }
     })}>
@@ -59,7 +67,8 @@ const NewIssuePage = () => {
       {/* TextArea to write the issue */}
       <Controller name="description" control={control}  render={({ field }) => <SimpleMDE placeholder='Please describe your issue' {...field} />} />
       <ErrorMessage>{errors.description?.message}</ErrorMessage>
-      <Button>Submit New Issue</Button>
+      {/* show the loader while submitting data and show the normal submit button otherwise */}
+     {isSubmitting? <Spinner/> : <Button>Submit New Issue</Button>}
     </form>
     </div>
   );
