@@ -1,6 +1,7 @@
 import IssueStatusBadge from '@/app/components/IssueStatusBadge';
 import prisma from '@/prisma/client';
 import { Card, Flex, Heading, Text } from '@radix-ui/themes';
+import delay from 'delay';
 import { notFound } from 'next/navigation';
 import ReactMarkdown from 'react-markdown';
 
@@ -21,10 +22,11 @@ const parsedId = parseInt(params.id);
           id: parsedId
         }
       })
-      if(!issue){
-        notFound();
-      }
-  
+      // redirect the user to the not found page if the issue is not found
+      if(!issue) notFound();
+      // simulate a delay of 2 seconds to show the loading skeleton
+      await delay(2000);
+
     return (
         <div>
             <Heading>{issue.title}</Heading>
