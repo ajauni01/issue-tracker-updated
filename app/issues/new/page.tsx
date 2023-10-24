@@ -12,6 +12,7 @@ import { createIssueSchema } from '@/app/validationSchema';
 import {z} from 'zod';
 import ErrorMessage from '@/app/components/ErrorMessage';
 import { Spinner } from '@/app/components/Spinner';
+import {marked} from "marked";
 
 // IssueForm is the type of the data that we are going to send to the server
 type IssueForm = z.infer<typeof createIssueSchema>;
@@ -84,3 +85,4 @@ export default NewIssuePage;
 // TODO: understand the react hook form controller component
 // TODO: thoroughly understand the react hook form
 // TODO: understand the (type IssueForm = z.infer<typeof createIssueSchema>);
+// TODO: Investigate why the markdown editor is not working (bold, h1, italic, etc). why all text is encloed in paragraph tag
