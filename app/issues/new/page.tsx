@@ -1,7 +1,7 @@
 'use client'
 import { Button, Callout, Text, TextField } from '@radix-ui/themes';
 import { InfoCircledIcon, MagnifyingGlassIcon } from '@radix-ui/react-icons';
-import SimpleMDE from "react-simplemde-editor";
+
 import "easymde/dist/easymde.min.css";
 import {useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -13,9 +13,14 @@ import {z} from 'zod';
 import ErrorMessage from '@/app/components/ErrorMessage';
 import { Spinner } from '@/app/components/Spinner';
 import {marked} from "marked";
+import dynamic from 'next/dynamic';
 
 // IssueForm is the type of the data that we are going to send to the server
 type IssueForm = z.infer<typeof createIssueSchema>;
+// disable server side rendering for the markdown editor (server side rendering is not supported by the markdown editor, and may cause errors)
+const SimpleMDE = dynamic(() => import('react-simplemde-editor'), {
+  ssr: false,
+});
 
 const NewIssuePage = () => {
   const router = useRouter();
@@ -68,8 +73,11 @@ const NewIssuePage = () => {
       </div>
       {/* display the error message related to the title */}
     <ErrorMessage>{errors.title?.message}</ErrorMessage>
-      {/* TextArea to write the issue */}
-      <Controller name="description" control={control}  render={({ field }) => <SimpleMDE placeholder='Please describe your issue' {...field} />} />
+      {/* TextArea to write the issue using the SimpleMDE markdown editor */}
+      <Controller name="description"
+       control={control} 
+        render={({ field }) => <SimpleMDE placeholder='Please describe your issue' {...field} />} />
+      {/* show the error message to the user */}
       <ErrorMessage>{errors.description?.message}</ErrorMessage>
       {/* show the loader while submitting data and show the normal submit button otherwise */}
      {isSubmitting? <Spinner/> : <Button>Submit New Issue</Button>}
@@ -80,8 +88,6 @@ const NewIssuePage = () => {
 
 export default NewIssuePage;
 
-// TODO: create a markdown editor for the issue description
-// TODO: understand the reason of using angle brackets in the TextField component
 // TODO: understand the react hook form controller component
 // TODO: thoroughly understand the react hook form
 // TODO: understand the (type IssueForm = z.infer<typeof createIssueSchema>);
