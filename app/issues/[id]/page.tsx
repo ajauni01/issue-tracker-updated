@@ -16,7 +16,7 @@ const parsedId = parseInt(params.id);
     notFound();
   }
 
-  // get the issue from the database
+  // get the issue from the MySQL database
     const issue = await prisma.issue.findUnique({
         where:{
           id: parsedId
