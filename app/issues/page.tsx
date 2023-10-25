@@ -1,13 +1,12 @@
-import React from 'react';
 import { Table } from '@radix-ui/themes';
-import Link from '../components/Link';
+import {IssueStatusBadge, Link } from '@/app/components';
 import prisma from '@/prisma/client';
-import IssueStatusBadge from '../components/IssueStatusBadge';
 import delay from 'delay';
 import IssueActions from './IssueActions';
   
 const IssuesPage = async () => {
   const issues = await prisma.issue.findMany();
+  // silulate a delay of 2 seconds to show the loading skeleton
   await delay(2000);
   
   return (
@@ -28,6 +27,7 @@ const IssuesPage = async () => {
           {issues.map(issue => (
             <Table.Row key={issue.id}>
               <Table.Cell>
+                {/* show to details of the issue upon clicking on the title */}
              <Link href={`/issues/${issue.id}`}> {issue.title}</Link>
                 <div className='block md:hidden'>
                   <IssueStatusBadge status={issue.status}/>
