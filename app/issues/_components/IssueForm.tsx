@@ -7,15 +7,15 @@ import { Controller, useForm } from "react-hook-form";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createIssueSchema } from "@/app/validationSchema";
+import { issueSchema } from "@/app/validationSchema";
 import { z } from "zod";
 import ErrorMessage from "@/app/components/ErrorMessage";
-import { Spinner } from "@/app/components/Spinner";
 import dynamic from "next/dynamic";
 import { Issue } from "@prisma/client";
+import { Spinner } from "@/app/components";
 
 // IssueFormData is the type of the data that we are going to send to the server
-type IssueFormData = z.infer<typeof createIssueSchema>;
+type IssueFormData = z.infer<typeof issueSchema>;
 // disable server side rendering for the markdown editor (server side rendering is not supported by the markdown editor, and may cause errors)
 const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
   ssr: false,
@@ -30,9 +30,9 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
     formState: { errors },
   } = useForm<IssueFormData>({
     // integrate react hook form with zod for data validation
-    resolver: zodResolver(createIssueSchema),
+    resolver: zodResolver(issueSchema),
   });
-  // console.log('register details', register('title'));
+
   // useState hook to handle the error
   const [error, setError] = useState("");
   // useState hook to handle the loading state
@@ -43,7 +43,10 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
     try {
       //  set the loading state to true wile the data is sending to the server
       setIsSubmitting(true);
-      await axios.post("/api/issues", data);
+      // if the issue already exists, update it, otherwise create a new one
+      if (issue) {
+        await axios.patch(`/api/issues/${issue.id}`, data);
+      } else await axios.post("/api/issues", data);
       //  route the user to the issues page after submitting the form
       router.push("/issues");
     } catch (error) {
@@ -92,8 +95,11 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
         />
         {/* show the error message to the user */}
         <ErrorMessage>{errors.description?.message}</ErrorMessage>
-        {/* show the loader while submitting data and show the normal submit button otherwise */}
-        {isSubmitting ? <Spinner /> : <Button>Submit New Issue</Button>}
+        {/* show the update issue or the submit new issue button and disable the button while submitting the form */}
+        <Button disabled={isSubmitting}>
+          {issue ? "Update Issue" : "Submit New Issue"}
+          {isSubmitting && <Spinner />}
+        </Button>
       </form>
     </div>
   );
@@ -103,6 +109,6 @@ export default IssueForm;
 
 // TODO: understand the react hook form controller component
 // TODO: thoroughly understand the react hook form
-// TODO: understand the (type IssueFormData = z.infer<typeof createIssueSchema>);
+// TODO: understand the (type IssueFormData = z.infer<typeof issueSchema>);
 // TODO: Investigate why the markdown editor is not working (bold, h1, italic, etc). why all text is encloed in paragraph tag
 // TODO: thoroughly investigate the mechanism of the prisma client / Issue model
