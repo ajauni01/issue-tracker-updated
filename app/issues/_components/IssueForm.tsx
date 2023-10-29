@@ -1,25 +1,21 @@
 "use client";
-import { Button, Callout, Text, TextField } from "@radix-ui/themes";
+import { Spinner } from "@/app/components";
+import ErrorMessage from "@/app/components/ErrorMessage";
+import { issueSchema } from "@/app/validationSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Issue } from "@prisma/client";
 import { InfoCircledIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
+import { Button, Callout, TextField } from "@radix-ui/themes";
+import axios from "axios";
 import "easymde/dist/easymde.min.css";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import axios from "axios";
-import { useRouter } from "next/navigation";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { issueSchema } from "@/app/validationSchema";
+import SimpleMDE from "react-simplemde-editor";
 import { z } from "zod";
-import ErrorMessage from "@/app/components/ErrorMessage";
-import dynamic from "next/dynamic";
-import { Issue } from "@prisma/client";
-import { Spinner } from "@/app/components";
 
 // IssueFormData is the type of the data that we are going to send to the server
 type IssueFormData = z.infer<typeof issueSchema>;
-// disable server side rendering for the markdown editor (server side rendering is not supported by the markdown editor, and may cause errors)
-const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
-  ssr: false,
-});
 
 const IssueForm = ({ issue }: { issue?: Issue }) => {
   const router = useRouter();
