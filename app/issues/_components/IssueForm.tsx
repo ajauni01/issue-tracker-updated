@@ -49,6 +49,8 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
       } else await axios.post("/api/issues", data);
       //  route the user to the issues page after submitting the form
       router.push("/issues");
+      // refresh the issues page after submitting the form
+      router.refresh();
     } catch (error) {
       // set the loading state to false if there is an error
       setIsSubmitting(false);
