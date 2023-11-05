@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from "next/server";
 import { issueSchema } from "@/app/validationSchema";
 import prisma from "@/prisma/client";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function PATCH(
   request: NextRequest,
@@ -37,3 +37,22 @@ export async function PATCH(
 }
 
 // TODO: thoroughly investigate the reason behind using format() method here (validation.error.format())
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const issue = await prisma.issue.findUnique({
+    where: { id: parseInt(params.id) },
+  });
+  // send an error response if the issue is not found
+  if (!issue) {
+    return NextResponse.json({ error: "Invalid issue" }, { status: 404 });
+  }
+  // delete the issue using the prisma client if the issue is found
+  await prisma.issue.delete({
+    where: { id: issue.id },
+  });
+
+  return NextResponse.json({ message: "Issue deleted successfully" });
+}
