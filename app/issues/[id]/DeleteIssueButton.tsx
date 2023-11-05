@@ -1,5 +1,6 @@
 "use client";
 
+import { Spinner } from "@/app/components";
 import { TrashIcon } from "@radix-ui/react-icons";
 import { AlertDialog, Button, Flex } from "@radix-ui/themes";
 import axios from "axios";
@@ -13,6 +14,8 @@ export const DeleteIssueButton = ({ issueId }: { issueId: number }) => {
   const router = useRouter();
   // show the error dialog box if an error occur
   const [error, setError] = useState(false);
+  // show the loading spinner and disable the delete button if the issue is being deleted
+  const [isDeleting, setIsDeleting] = useState(false);
   // show the toast message if the issue is deleted successfully
   const showToastMessage = () => {
     toast.error("The issue has been deleted !", {
@@ -20,9 +23,11 @@ export const DeleteIssueButton = ({ issueId }: { issueId: number }) => {
     });
   };
   // deleteIssue function to delete an issue
+  // deleteIssue function to delete an issue
   const deleteIssue = async () => {
     try {
-      // throw new Error();
+      // set the setIsDeleting state to true to show the loading spinner and disable the delete button
+      setIsDeleting(true);
       await axios.delete(`/api/issues/${issueId}`);
       // show the toast message if the issue is deleted successfully
       showToastMessage();
@@ -31,7 +36,9 @@ export const DeleteIssueButton = ({ issueId }: { issueId: number }) => {
       // refresh the page to show the updated issues list
       router.refresh();
     } catch (error) {
-      // se the error state to true if an error occur
+      // set the setIsDeleting state to false to hide the loading spinner and enable the delete button
+      setIsDeleting(false);
+      // set the error state to true if an error occur
       setError(true);
     }
   };
@@ -40,9 +47,12 @@ export const DeleteIssueButton = ({ issueId }: { issueId: number }) => {
       <ToastContainer />
       <AlertDialog.Root>
         <AlertDialog.Trigger>
-          <Button color="red">
+          {/* disable the button upon while issue is being deleted from the database */}
+          <Button disabled={isDeleting} color="red">
             <TrashIcon />
-            Delete
+            Delete Issue
+            {/* render the spinner component while an issue is being deleted */}
+            {isDeleting && <Spinner />}
           </Button>
         </AlertDialog.Trigger>
         <AlertDialog.Content style={{ maxWidth: 450 }}>
