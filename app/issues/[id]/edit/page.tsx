@@ -3,6 +3,7 @@ import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
 import IssueFormSkeleton from "./loading";
 
+// dynamic import the IssueForm component to provide a better user experience and show the loading skeleton
 const IssueForm = dynamic(() => import("@/app/issues/_components/IssueForm"), {
   ssr: false,
   loading: () => <IssueFormSkeleton />,
