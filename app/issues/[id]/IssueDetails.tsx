@@ -12,7 +12,7 @@ const IssueDetails = ({ issue }: { issue: Issue }) => {
         <Text>{issue.createdAt.toDateString()}</Text>
       </Flex>
       {/* add the pros class to improve the quality of the text written on the markdown editor */}
-      <Card className="prose mt-2">
+      <Card className="prose max-w-full mt-2">
         <ReactMarkdown>{issue.description}</ReactMarkdown>
       </Card>
     </>
@@ -21,3 +21,4 @@ const IssueDetails = ({ issue }: { issue: Issue }) => {
 
 export default IssueDetails;
 // TODO: deep dive into the 'Issue' from prisma client
+// TODO: further exlore the tailwind 'prose' class
