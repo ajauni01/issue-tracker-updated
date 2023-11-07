@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import NavBar from "./NavBar";
 import { Container, Theme, ThemePanel } from "@radix-ui/themes";
+import AuthProvider from "./auth/Provider";
 
 // add the Inter font to the page
 const inter = Inter({
@@ -26,14 +27,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.variable}>
-        <Theme accentColor="yellow" grayColor="mauve" scaling="105%">
-          <NavBar />
-          <main className="p-5">
-            <Container>{children}</Container>
-          </main>
-          {/* ThemePanel component to customize the Radix UI themes */}
-          {/* <ThemePanel/> */}
-        </Theme>
+        <AuthProvider>
+          <Theme accentColor="yellow" grayColor="mauve" scaling="105%">
+            <NavBar />
+            <main className="p-5">
+              <Container>{children}</Container>
+            </main>
+            {/* ThemePanel component to customize the Radix UI themes */}
+            {/* <ThemePanel/> */}
+          </Theme>
+        </AuthProvider>
       </body>
     </html>
   );
