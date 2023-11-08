@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
- 
+@layer utilities {
+    .nav-link {
+      @apply text-zinc-500 transition-colors hover:text-zinc-800;
+    }
+  }
