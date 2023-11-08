@@ -5,12 +5,16 @@ import { notFound } from "next/navigation";
 import EditIssueButton from "./EditIssueButton";
 import IssueDetails from "./IssueDetails";
 import DeleteIssueButton from "./DeleteIssueButton";
+import { getServerSession } from "next-auth";
+import authOptions from "@/app/auth/authOptions";
 
 interface Props {
   params: { id: string };
 }
 
 const IssueDetailPage = async ({ params }: Props) => {
+  // get the session from the server
+  const session = await getServerSession(authOptions);
   // redirect the user to the not found page if the parsed id is not a number
   const parsedId = parseInt(params.id);
   if (isNaN(parsedId)) {
@@ -36,13 +40,15 @@ const IssueDetailPage = async ({ params }: Props) => {
         <IssueDetails issue={issue} />
       </Box>
       {/* column2*/}
-      <Box>
-        <Flex direction="column" gap="2">
-          <EditIssueButton issueId={issue.id} />
-          {/* delete button */}
-          <DeleteIssueButton issueId={issue.id} />
-        </Flex>
-      </Box>
+      {session && (
+        <Box>
+          <Flex direction="column" gap="2">
+            <EditIssueButton issueId={issue.id} />
+            {/* delete button */}
+            <DeleteIssueButton issueId={issue.id} />
+          </Flex>
+        </Box>
+      )}
     </Grid>
   );
 };
