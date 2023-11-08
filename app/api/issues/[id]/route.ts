@@ -1,12 +1,19 @@
+import authOptions from "@/app/auth/authOptions";
 import { issueSchema } from "@/app/validationSchema";
 import prisma from "@/prisma/client";
-import delay from "delay";
+import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function PATCH(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  // get the current session to authenticate the user
+  const session = await getServerSession(authOptions);
+  //  if the user is not authenticated, return a not found page
+  if (!session) {
+    return NextResponse.json({}, { status: 401 });
+  }
   // get the response from the request
   const body = await request.json();
   //  store the object returned by zod in the validation variable
@@ -43,6 +50,12 @@ export async function DELETE(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  // get the current session to authenticate the user
+  const session = await getServerSession(authOptions);
+  //  if the user is not authenticated, return a not found page
+  if (!session) {
+    return NextResponse.json({}, { status: 401 });
+  }
   // find the issue using the prisma client
   const issue = await prisma.issue.findUnique({
     where: { id: parseInt(params.id) },

@@ -77,7 +77,7 @@ const AuthStatus = () => {
   if (status === "loading") return <Skeleton width="3rem"/>;
   /* show the signin option if the user is not logged in */
   if (status === "unauthenticated")
-    return <Link className="nav-link" href="api/auth/signin">Sign In</Link>;
+    return <Link className="nav-link" href="/api/auth/signin">Sign In</Link>;
   return (
     <Box>
       {/* show the signout option in a drop-down menu if the user is already logged in */}
