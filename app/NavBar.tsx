@@ -1,12 +1,13 @@
 // use the 'use client' directive to make sure that the usePathname hook is only rendered on the client,
 "use client";
+import { Skeleton } from "@/app/components";
 import {
-  Avatar,
-  Box,
-  Container,
-  DropdownMenu,
-  Flex,
-  Text,
+    Avatar,
+    Box,
+    Container,
+    DropdownMenu,
+    Flex,
+    Text,
 } from "@radix-ui/themes";
 import classNames from "classnames";
 import { useSession } from "next-auth/react";
@@ -73,7 +74,7 @@ const NavLinks = () => {
 const AuthStatus = () => {
   const { status, data: session } = useSession();
   //   return null if the session is loading
-  if (status === "loading") return null;
+  if (status === "loading") return <Skeleton width="3rem"/>;
   /* show the signin option if the user is not logged in */
   if (status === "unauthenticated")
     return <Link className="nav-link" href="api/auth/signin">Sign In</Link>;
