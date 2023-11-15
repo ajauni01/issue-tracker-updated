@@ -7,24 +7,22 @@ import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 
 const AssigneeSelect = ({ issue }: { issue: Issue }) => {
-  const {
-    data: users,
-    error,
-    isLoading,
-  } = useQuery<User[]>({
-    // queryKey is a unique identifier for the query
-    queryKey: ["users"],
-    // queryFn is a function that returns the data
-    queryFn: () => axios.get("/api/users").then((res) => res.data),
-    // staleTime is the time in milliseconds before the data is considered stale // we are using it for caching
-    staleTime: 60 * 1000,
-    // retry is the number of times to retry the query if it fails
-    retry: 3,
-  });
+  const { data: users, error, isLoading } = useUsers();
   //   return the loading skeleton if the data is still loading
   if (isLoading) return <Skeleton />;
   //   return null if there is still error after retrying 3 times
   if (error) return null;
+
+  //  assignIssue is a function that is called when the value of the select changes and the api is called to update the issue
+  const assignIssue = (userId: string) => {
+    try {
+      axios.patch(`/api/issues/${issue.id}`, {
+        assignedToUserId: userId === "unassigned" ? null : userId,
+      });
+    } catch (error) {
+      toast.error("Changes could not be saved");
+    }
+  };
 
   return (
     <>
@@ -33,15 +31,7 @@ const AssigneeSelect = ({ issue }: { issue: Issue }) => {
         // the default value of the select
         defaultValue={issue.assignedToUserId || "unassigned"}
         // onValueChange is a function that is called when the value of the select changes and the api is called to update the issue
-        onValueChange={async (userId) => {
-          try {
-            await axios.patch(`/api/issues/${issue.id}`, {
-              assignedToUserId: userId === "unassigned" ? null : userId,
-            });
-          } catch (error) {
-            toast.error("Changes could not be saved");
-          }
-        }}
+        onValueChange={assignIssue}
       >
         <Select.Trigger placeholder="Assign..." />
         <Select.Content>
@@ -60,6 +50,21 @@ const AssigneeSelect = ({ issue }: { issue: Issue }) => {
     </>
   );
 };
+
+// useUsers is a custom hook that is used to fetch the users to maintain clean code
+const useUsers = () => {
+  return useQuery<User[]>({
+    // queryKey is a unique identifier for the query
+    queryKey: ["users"],
+    // queryFn is a function that returns the data
+    queryFn: () => axios.get("/api/users").then((res) => res.data),
+    // staleTime is the time in milliseconds before the data is considered stale // we are using it for caching
+    staleTime: 60 * 1000,
+    // retry is the number of times to retry the query if it fails
+    retry: 3,
+  });
+};
+
 export default AssigneeSelect;
 
 // TODO: deep dive into the queryKey and queryFn
