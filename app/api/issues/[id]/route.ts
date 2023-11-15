@@ -1,5 +1,5 @@
 import authOptions from "@/app/auth/authOptions";
-import { issueSchema } from "@/app/validationSchema";
+import { pathchIssueSchema } from "@/app/validationSchema";
 import prisma from "@/prisma/client";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
@@ -11,16 +11,28 @@ export async function PATCH(
   // get the current session to authenticate the user
   const session = await getServerSession(authOptions);
   //  if the user is not authenticated, return a not found page
-  if (!session) {
-    return NextResponse.json({}, { status: 401 });
-  }
+  // if (!session) {
+  //   return NextResponse.json({}, { status: 401 });
+  // }
   // get the response from the request
   const body = await request.json();
   //  store the object returned by zod in the validation variable
-  const validation = issueSchema.safeParse(body);
+  const validation = pathchIssueSchema.safeParse(body);
   // send a 400 response if the validation fails
   if (!validation.success) {
     return NextResponse.json(validation.error.format(), { status: 400 });
+  }
+  // destructure the assignedToUserId, title and description from the body
+  const { assignedToUserId, title, description } = body;
+  // if the assignedToUserId is present, find the user using the prisma client
+  if (assignedToUserId) {
+    const user = await prisma.user.findUnique({
+      where: { id: assignedToUserId },
+    });
+    // send an error response if the user is not found
+    if (!user) {
+      return NextResponse.json({ error: "Invalid user" }, { status: 400 });
+    }
   }
 
   //  if the validation is successful, find the issue using the prisma client
@@ -36,8 +48,9 @@ export async function PATCH(
   const updatedIssue = await prisma.issue.update({
     where: { id: parseInt(params.id) },
     data: {
-      title: body.title,
-      description: body.description,
+      title,
+      description,
+      assignedToUserId,
     },
   });
 
