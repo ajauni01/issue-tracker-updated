@@ -11,9 +11,9 @@ export async function PATCH(
   // get the current session to authenticate the user
   const session = await getServerSession(authOptions);
   //  if the user is not authenticated, return a not found page
-  // if (!session) {
-  //   return NextResponse.json({}, { status: 401 });
-  // }
+  if (!session) {
+    return NextResponse.json({}, { status: 401 });
+  }
   // get the response from the request
   const body = await request.json();
   //  store the object returned by zod in the validation variable
