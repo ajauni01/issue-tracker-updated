@@ -27,11 +27,19 @@ const IssuesPage = async ({ searchParams }: Props) => {
   const status = statuses.includes(searchParams.status)
     ? searchParams.status
     : undefined;
+  // if the searchParams.orderBy is not in the columns array, set the orderBy to undefined so that the system does not crash
+  // validate the column name by mapping the array of columns and checking if the column.value is included in the searchParams.orderBy to avoid system crash
+  const orderBy = columns
+    .map((column) => column.value)
+    .includes(searchParams.orderBy)
+    ? { [searchParams.orderBy]: "asc" }
+    : undefined;
   //  fetch issues from the database based on the status or searchParams.status
   const issues = await prisma.issue.findMany({
     where: {
       status,
     },
+    orderBy,
   });
   return (
     <div>
@@ -50,7 +58,9 @@ const IssuesPage = async ({ searchParams }: Props) => {
                   {" "}
                   {column.label}
                   {/* show the arrow icon for the NextLink based on the currently selected column */}
-                  {column.value === searchParams.orderBy && <ArrowDownIcon className="inline" />}
+                  {column.value === searchParams.orderBy && (
+                    <ArrowDownIcon className="inline" />
+                  )}
                 </NextLink>
               </Table.ColumnHeaderCell>
             ))}
