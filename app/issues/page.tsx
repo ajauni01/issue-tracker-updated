@@ -2,14 +2,24 @@ import { Table } from "@radix-ui/themes";
 import { IssueStatusBadge, Link } from "@/app/components";
 import prisma from "@/prisma/client";
 import IssueActions from "./IssueActions";
-import { Status } from "@prisma/client";
+import { Issue, Status } from "@prisma/client";
+import NextLink from "next/link";
+import { ArrowDownIcon } from "@radix-ui/react-icons";
 
 // annotate the searchParams prop with the type of the searchParams object which has a stuatus property of type Status from prisma/client
 interface Props {
   searchParams: {
     status: Status;
+    orderBy: keyof Issue;
   };
 }
+// filter the issues based on the column value
+const columns: { label: string; value: keyof Issue; className?: string }[] = [
+  { label: "Issue", value: "title" },
+  { label: "Status", value: "status", className: "hidden md:table-cell" },
+  { label: "Created", value: "createdAt", className: "hidden md:table-cell" },
+];
+
 const IssuesPage = async ({ searchParams }: Props) => {
   // get all the statuses from the Prisma client Status enum
   const statuses = Object.values(Status);
@@ -23,7 +33,6 @@ const IssuesPage = async ({ searchParams }: Props) => {
       status,
     },
   });
-
   return (
     <div>
       {/* new issue button */}
@@ -32,13 +41,19 @@ const IssuesPage = async ({ searchParams }: Props) => {
       <Table.Root variant="surface">
         <Table.Header>
           <Table.Row>
-            <Table.ColumnHeaderCell>Issue</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell className="md:table-cell">
-              Status
-            </Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell className="md:table-cell">
-              Created
-            </Table.ColumnHeaderCell>
+            {columns.map((column) => (
+              <Table.ColumnHeaderCell key={column.value}>
+                {/* Query object to pass the selected query in addition to the current filtering to the url */}
+                <NextLink
+                  href={{ query: { ...searchParams, orderBy: column.value } }}
+                >
+                  {" "}
+                  {column.label}
+                  {/* show the arrow icon for the NextLink based on the currently selected column */}
+                  {column.value === searchParams.orderBy && <ArrowDownIcon className="inline" />}
+                </NextLink>
+              </Table.ColumnHeaderCell>
+            ))}
           </Table.Row>
         </Table.Header>
         {/* table body */}
