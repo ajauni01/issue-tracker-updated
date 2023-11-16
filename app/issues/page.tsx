@@ -16,8 +16,8 @@ interface Props {
 // filter the issues based on the column value
 const columns: { label: string; value: keyof Issue; className?: string }[] = [
   { label: "Issue", value: "title" },
-  { label: "Status", value: "status", className: "hidden md:table-cell" },
-  { label: "Created", value: "createdAt", className: "hidden md:table-cell" },
+  { label: "Status", value: "status", className: "md:table-cell" },
+  { label: "Created", value: "createdAt", className: "md:table-cell" },
 ];
 
 const IssuesPage = async ({ searchParams }: Props) => {
@@ -50,7 +50,10 @@ const IssuesPage = async ({ searchParams }: Props) => {
         <Table.Header>
           <Table.Row>
             {columns.map((column) => (
-              <Table.ColumnHeaderCell key={column.value}>
+              <Table.ColumnHeaderCell
+                key={column.value}
+                className={column.className}
+              >
                 {/* Query object to pass the selected query in addition to the current filtering to the url */}
                 <NextLink
                   href={{ query: { ...searchParams, orderBy: column.value } }}
