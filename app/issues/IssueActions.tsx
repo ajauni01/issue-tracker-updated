@@ -4,7 +4,7 @@ import IssueStatusFilter from "./list/IssueStatusFilter";
 
 const IssueActions = () => {
   return (
-    <Flex mb="5" justify="between">
+    <Flex gap="3" justify="between">
       {/* show the issue filter button to filter issues among 'ALL', 'OPEN', 'IN_PROGRESS', and 'CLOSED' */}
       <IssueStatusFilter />
       {/* show the new issue button to create a new issue */}
