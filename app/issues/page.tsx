@@ -4,6 +4,7 @@ import Pagination from "../components/Pagination";
 import IssueActions from "./IssueActions";
 import IssueTable, { IssueQuery, columnNames } from "./list/IssueTable";
 import { Flex } from "@radix-ui/themes";
+import { Metadata } from "next";
 
 // annotate the searchParams prop with the type of the searchParams object which has a stuatus property of type Status from prisma/client
 interface Props {
@@ -58,3 +59,10 @@ const IssuesPage = async ({ searchParams }: Props) => {
 export default IssuesPage;
 // TODO: Investgate why the md:table-cell class is not working after adding the 'hidden' class to the div
 // TODO: understand the const issues = await prisma.issue.findMany();
+
+export const dynamic = "force-dynamic";
+export const metadata: Metadata = {
+  title: "Issue Tracker - Issue List",
+  description: "View all project issues",
+};
+
