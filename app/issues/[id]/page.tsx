@@ -8,9 +8,15 @@ import DeleteIssueButton from "./DeleteIssueButton";
 import { getServerSession } from "next-auth";
 import authOptions from "@/app/auth/authOptions";
 import AssigneeSelect from "./AssigneeSelect";
+import { cache } from "react";
+
 interface Props {
   params: { id: string };
 }
+// invoke the react cache function to avoid the repeated fetching of the same issue
+const fetchUser = cache((issueId: number) =>
+  prisma.issue.findUnique({ where: { id: issueId } })
+);
 
 const IssueDetailPage = async ({ params }: Props) => {
   // get the session from the server
@@ -20,13 +26,8 @@ const IssueDetailPage = async ({ params }: Props) => {
   if (isNaN(parsedId)) {
     notFound();
   }
-
   // get the issue from the MySQL database
-  const issue = await prisma.issue.findUnique({
-    where: {
-      id: parsedId,
-    },
-  });
+  const issue = await fetchUser(parsedId);
   // redirect the user to the not found page if the issue is not found
   if (!issue) notFound();
   // simulate a delay of 2 seconds to show the loading skeleton
@@ -57,11 +58,7 @@ const IssueDetailPage = async ({ params }: Props) => {
 
 // show the name of the issue in the browser tab
 export async function generateMetadata({ params }: Props) {
-  const issue = await prisma.issue.findUnique({
-    where: {
-      id: parseInt(params.id),
-    },
-  });
+  const issue = await fetchUser(parseInt(params.id));
   return {
     title: issue?.title,
     description: "Details of issue " + issue?.id,
