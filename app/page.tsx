@@ -27,4 +27,4 @@ export const metadata: Metadata = {
   description: "View a summary of project issues",
 };
 
-// TODO: investigate how does the searchParams object get the page number and pass it to the Pagination component
+

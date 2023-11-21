@@ -44,5 +44,4 @@ export default function RootLayout({
     </html>
   );
 }
-// TODO: Investigate why my page.tsx working as a child of the RootLayout despite not being wrapped by it.
-// TODO:Investigate how the font is implemented in the RootLayout component and why the inter font is not loading
+

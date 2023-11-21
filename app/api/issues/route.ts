@@ -27,5 +27,4 @@ export async function POST(request: NextRequest) {
   return NextResponse.json(newIssue, { status: 201 });
 }
 
-// TODO: understand the issueSchema
-// TODO: understand the Next.js prisma client
+

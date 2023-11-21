@@ -7,7 +7,7 @@ import IssueFormSkeleton from "./loading";
 const IssueForm = dynamic(() => import("@/app/issues/_components/IssueForm"), {
   ssr: false,
   loading: () => <IssueFormSkeleton />,
-}); // TODO: understand how this works
+}); 
 interface Props {
   params: { id: string };
 }
@@ -25,4 +25,4 @@ const EditIssuePage = async ({ params }: Props) => {
 
 export default EditIssuePage;
 
-// TODO: understand how the dot notation works to extract the id from the params object
+

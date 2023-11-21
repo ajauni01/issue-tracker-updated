@@ -66,5 +66,5 @@ export async function generateMetadata({ params }: Props) {
 }
 
 export default IssueDetailPage;
-// TODO: understand the interface Props
-// TODO: deep dive into the breakpoints in Radix UI and tailwnd
+
+

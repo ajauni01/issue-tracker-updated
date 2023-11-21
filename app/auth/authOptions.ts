@@ -16,4 +16,3 @@ const authOptions:NextAuthOptions = {
   },
 };
 export default authOptions;
-// TODO: deep dive into the authOptions mechanism

@@ -29,8 +29,6 @@ enum Status {
   CLOSED
 }
 
-// TODO: Thoroughly understand the Prisma Schema model
-
 model Account {
   id                String  @id @default(cuid())
   userId            String
@@ -76,6 +74,3 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
-
-// TODO: deep dive into the schema.prisma model from Auth.js
-// TODO: deep dive into the model User and model Account

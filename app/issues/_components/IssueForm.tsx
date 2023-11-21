@@ -105,8 +105,4 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
 
 export default IssueForm;
 
-// TODO: understand the react hook form controller component
-// TODO: thoroughly understand the react hook form
-// TODO: understand the (type IssueFormData = z.infer<typeof issueSchema>);
-// TODO: Investigate why the markdown editor is not working (bold, h1, italic, etc). why all text is encloed in paragraph tag
-// TODO: thoroughly investigate the mechanism of the prisma client / Issue model
+

@@ -20,5 +20,4 @@ const IssueDetails = ({ issue }: { issue: Issue }) => {
 };
 
 export default IssueDetails;
-// TODO: deep dive into the 'Issue' from prisma client
-// TODO: further exlore the tailwind 'prose' class
+

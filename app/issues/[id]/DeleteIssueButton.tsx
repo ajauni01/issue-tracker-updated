@@ -95,4 +95,4 @@ export const DeleteIssueButton = ({ issueId }: { issueId: number }) => {
 };
 
 export default DeleteIssueButton;
-// TODO: thoroughly investigate why I don't need to mention the 'api' folder in the delete url
+

@@ -19,4 +19,4 @@ const QueryClientProvider = ({ children }: PropsWithChildren) => {
 
 export default QueryClientProvider;
 
-// TODO: deep dive into the QueryClientProvider
+

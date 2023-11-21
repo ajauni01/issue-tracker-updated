@@ -11,4 +11,3 @@ const ErrorMessage = ({children}: PropsWithChildren) => {
 }
 
 export default ErrorMessage
-// TODO: understand the PropsWithChildren type

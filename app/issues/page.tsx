@@ -57,8 +57,7 @@ const IssuesPage = async ({ searchParams }: Props) => {
 };
 
 export default IssuesPage;
-// TODO: Investgate why the md:table-cell class is not working after adding the 'hidden' class to the div
-// TODO: understand the const issues = await prisma.issue.findMany();
+
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {

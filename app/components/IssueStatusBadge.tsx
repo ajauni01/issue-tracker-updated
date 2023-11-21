@@ -22,4 +22,4 @@ const IssueStatusBadge = ({status}:{status:Status}) => {
 }
 
 export default IssueStatusBadge;
-// TODO: understand how the statusMap works
+

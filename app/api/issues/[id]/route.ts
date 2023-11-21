@@ -57,7 +57,7 @@ export async function PATCH(
   return NextResponse.json(updatedIssue);
 }
 
-// TODO: thoroughly investigate the reason behind using format() method here (validation.error.format())
+
 
 export async function DELETE(
   request: NextRequest,
