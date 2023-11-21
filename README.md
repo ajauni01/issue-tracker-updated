@@ -10,7 +10,7 @@ Issue Tracker is a comprehensive dashboard that empowers users to manage essays,
 
 ## Key Features
 
-- **Essay Management**: Create, update, and delete essays effortlessly.
+- **Issue Management**: Create, update, and delete issues effortlessly.
 - **Task Assignment**: Assign specific tasks to individuals for resolution.
 - **Progress Tracking**: Monitor the status of essay resolutions and tasks.
 - **Responsive Interface**: Enjoy a user-friendly, responsive design for seamless usage across devices.
