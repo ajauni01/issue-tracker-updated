@@ -42,8 +42,6 @@ The app will be running at http://localhost:3000.
 Contributing
 We welcome contributions to improve and enhance Issue Tracker. Feel free to open issues, submit pull requests, or provide feedback to make this tool even better.
 
-Please follow our Contribution Guidelines when contributing to this project.
-
 Support
 For any inquiries, assistance, or issues encountered, reach out to us at ajauni01@wsc.edu
 
