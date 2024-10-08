@@ -15,7 +15,7 @@ interface Props {
 const EditIssuePage = async ({ params }: Props) => {
   // fetch the issue data from the database
   const issue = await prisma.issue.findUnique({
-    where: { id: parseInt(params.id) },
+    where: { id: params.id },
   });
   // return a 404 page if the issue is not found
   if (!issue) return notFound();
