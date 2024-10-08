@@ -37,7 +37,7 @@ export async function PATCH(
 
   //  if the validation is successful, find the issue using the prisma client
   const issue = await prisma.issue.findUnique({
-    where: { id: parseInt(params.id) },
+    where: { id: params.id },
   });
 
   //  send an error response if the issue is not found
@@ -46,7 +46,7 @@ export async function PATCH(
   }
   //  update the issue using the prisma client if the issue is found
   const updatedIssue = await prisma.issue.update({
-    where: { id: parseInt(params.id) },
+    where: { id: params.id },
     data: {
       title,
       description,
