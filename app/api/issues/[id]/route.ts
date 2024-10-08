@@ -71,7 +71,7 @@ export async function DELETE(
   }
   // find the issue using the prisma client
   const issue = await prisma.issue.findUnique({
-    where: { id: parseInt(params.id) },
+    where: { id: params.id },
   });
   // send an error response if the issue is not found
   if (!issue) {
