@@ -27,7 +27,7 @@ const Pagination = ({ itemCount, pageSize, currentPage }: Props) => {
 
   const changePage = (page: number) => {
     // create a new URLSearchParams object, and it provides several methods to work with the query string of a URL
-    const params = new URLSearchParams(searchParams);
+    const params = new URLSearchParams(searchParams.toString());
     // set the page query parameter to the page number
     params.set("page", page.toString());
     // redirect the user to the updated page with the query parameter

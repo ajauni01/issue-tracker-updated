@@ -15,7 +15,7 @@ interface Props {
 }
 // invoke the react cache function to avoid the repeated fetching of the same issue
 const fetchUser = cache((issueId: number) =>
-  prisma.issue.findUnique({ where: { id: issueId } })
+  prisma.issue.findUnique({ where: { id: issueId.toString() } })
 );
 
 const IssueDetailPage = async ({ params }: Props) => {
@@ -46,9 +46,9 @@ const IssueDetailPage = async ({ params }: Props) => {
           <Flex direction="column" gap="2">
             <AssigneeSelect issue={issue} />
             {/* edit button */}
-            <EditIssueButton issueId={issue.id} />
+            <EditIssueButton issueId={parseInt(issue.id)} />
             {/* delete button */}
-            <DeleteIssueButton issueId={issue.id} />
+            <DeleteIssueButton issueId={parseInt(issue.id)} />
           </Flex>
         </Box>
       )}
